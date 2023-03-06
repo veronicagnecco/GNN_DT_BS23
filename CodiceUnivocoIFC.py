@@ -6,7 +6,7 @@ import pandas as pd
 from math import *
 
 
-###COLLECTING ELEMENTS, LOCATIONS AND REALD ID PARAMETER############################################################################################################
+###COLLECTING ELEMENTS, LOCATIONS AND REAL ID PARAMETER############################################################################################################
 
 
 elements1 = #VERFIL_AllObjectsOfIFCCategoryThatInRevitAreDataDevices-FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_DataDevices).WhereElementIsNotElementType().ToElements()
@@ -245,8 +245,6 @@ for s in range(len(subjects)):
         
 wearables=[h.split("_")[0] for h in all_headers[49:]]
 
-
-
 control0=[]
 control=[]
 control1=[]
@@ -368,8 +366,7 @@ with open('C:/Dropbox (Testroom Lab)/BIM-DigitalTwin/06. Experimental Data/Digit
                 
         h.write(f"CREATE ({alias}:{nature} {{name: '{name}', RevitID: '{id}'}})\n")
         letter_code_counter+=1
-        
-        
+
         
         letter_code_for_conclusion.append(alias)
             

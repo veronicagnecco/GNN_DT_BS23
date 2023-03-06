@@ -44,8 +44,7 @@ def get_objects_data_by_class(file,class_type):
             else "",
             "QuantitySets": qtos,
             "PropertySets": psets,
-        })
-    return objects_data, list(pset_attributes)
+        })    return objects_data, list(pset_attributes)
 
 def get_attribute_value(object_data,attribute):
     if "." not in attribute:
