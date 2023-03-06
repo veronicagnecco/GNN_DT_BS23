@@ -55,22 +55,20 @@ for a,b,c,d,e,f,g,h,i,j,k,l,m in zip(subjects,TC_list,TS_list,PTC_list,VC_list,V
     with driver.session(database="neo4j") as session:
         session.execute_write(create_person_nodes,subject=a,name=a,TC=b,TS=c,PTC=d,VC=e,VS=f,PVC=g,AC=h,AS=i,PAC=j,AIC=k,AIS=l,PAI=m)
 
-
-#Create nodes: Facility, computer, experiment
-def create_room(tx):
-    result = tx.run(
-        "CREATE(DJ:Facility {name:'NextRoom', RevitID:'Facility_N_XX'})"
-        "CREATE(DK:Experiment {name:'Experiment_XX', RevitID:'Experiment_N_XX'})"
-        "CREATE(DL:Computer {name:'PC_NextRoom',RevitID: '849243'})"
-        "RETURN DJ, DK, DL")
-    return result
-
 #Create nodes: wearables (using file already done)
+with open('0_PCAndNextRoom.txt', 'r') as file:
+    read_facility = file.read()
+
 with open('2_WearableSensors.txt', 'r') as file:
     read_wearables = file.read()
 
 with open('3_EnvironmentalSensors.txt', 'r') as file:
     read_env = file.read()
+
+#Create nodes: Facility, computer, experiment
+def create_room(tx):
+    result = tx.run(read_facility)
+    return result
 
 def create_match_wearables(tx): #when the file is ready doesn't need to be executed with driver
     result = tx.run(read_wearables)
@@ -162,131 +160,6 @@ with driver.session(database="neo4j") as session:
 
 quit()
 
-#Reading wearable sensors data
-for s in range(len(subjects)):
-    subject = subjects[s]
-    globals()["df_" + str(subject)] = pd.read_csv(subject+"_data_phys_env_total.csv")#creatingdataframes
-    globals()["Timestamps_" + str(subject)] = list(globals()["df_" + str(subject)]['Timestamp'])#collecting timestamps
-
-    if s == 0:
-        all_headers = list(globals()["df_" + str(subject)].columns)
-        headers = all_headers[49:]
-
-    for header in headers:
-        globals()[header + "_" + str(subject)] = list(globals()["df_" + str(subject)][header])  # collecting columns values
-
-wearables = [h.split("_")[0] for h in all_headers[49:]]
-
-control0 = []
-control = []
-control1 = []
-
-for subject in subjects:
-    for i in range(len(globals()["Timestamps_" + str(subject)])):
-
-        for header in headers:
-            timestamp = globals()["Timestamps_" + str(subject)][i]
-            sens_value = globals()[header + "_" + str(subject)][i]
-            control0.append(subject + "_" + str(timestamp).replace(" ", "_").replace("-", "_").replace(":", "_").replace("/","_") + "_" + header + ":")
-            control1.append(sens_value)
-
-data = []
-
-for c in control0:
-    control.append(c.replace("/", "_"))
-
-for sensor in headers:
-    data_rough0 = ""
-    for i in range(len(control)):
-        prop = control[i] #column value
-        value = str(control1[i]) #column name
-        if sensor + ":" in prop:
-            data_rough0 += f" {prop} '{value}',"
-
-    data.append(data_rough0[:-1])
-
-keys_list = headers
-values_list = data
-zip_iterator = zip(keys_list, values_list)
-ass_sens_data = dict(zip_iterator)
-
-#OUT=Timestamps_S05,Timestamps_S06,Timestamps_S07,Timestamps_S08, headers,control,control1,ass_sens_data,data,wearables
-
-quit()
-
-
-
-
-
-
-quit()
-
-#records, summary =
-# Summary information
-print("The query `{query}` returned {records_count} records in {time} ms.".format(
-    query=summary.query, records_count=len(records),
-    time=summary.result_available_after,
-))
-
-# Loop through results and do something with them
-for person in records:
-    print(person)
-
-
-def match_person_wearables(tx,subject,wearable): #defines the unit of work to be executed in the transaction
-    result1 = tx.run(
-        "MATCH path = (a:wearable)-[rel:Monitor]->(s:subject {subject:$subject}) "
-        "RETURN path, s.subject AS subject, a.wearable AS wearable, rel.relation AS relation",
-        subject=subject,wearable=wearable)
-    records1 = list(result1)
-    #summary1 = result1.consume()
-    relation1 = result1.value('relation')
-    return records1, relation1
-
-with driver.session(database="neo4j") as session:
-    records1, relation1 = session.execute_write(match_person_wearables, subject='Giulia',wearable='Empatica')
-
-'''# Summary information
-print("The query `{query}` returned {records_count} records in {time} ms.".format(
-    query=summary1.query, records_count=len(records1),
-    time=summary1.result_available_after,
-))'''
-
-# Loop through results and do something with them
-for person in records1:
-    print(person)
-
-
-
-
-
-
-
-
-
-
-quit()
-
-driver = GraphDatabase.driver(host, auth=(user, password))
-driver.verify_connectivity()
-
-with driver.session() as session:
-    records, summary = session.execute_read(create_person, name="Michael")
-
-# Summary information
-print("The query `{query}` returned {records_count} records in {time} ms.".format(
-    query=summary.query, records_count=len(records),
-    time=summary.result_available_after,
-))
-
-# Loop through results and do something with them
-for person in records:
-    print(person)
-
-session.close()
-
-
-quit()
 graph = Graph(host, auth=(user, password))
 #Check connectivity Python - Neo4J
 try:
