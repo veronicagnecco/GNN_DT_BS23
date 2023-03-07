@@ -19,4 +19,6 @@ Routines included in the Repository to carry out the method:
 
 ifc_association: association the relevant information of the BIM model objects with the environmental information collected during experimental campaigns.     
 env_phys_data_cypher: creation of four text files in Cypher language: one file with environmental information during test periods, the second physiological data from the subjects, the third creates subjects' nodes and the last one the facility's nodes; participants' subjective votes of comfort were gathered from a .csv file, compiled and organized during experimental campaigns.The files were created using .csv document generated from experimental campaigns. Environmental data depends on the sensors included in the test room; physiological data regards to the wearable sensors employed in the campaign.  
-net_creation: connection of the python engine with Neo4J and creation of nodes/relationships.  
+net_creation: connection of the python engine with Neo4J and creation of nodes/relationships.
+
+xxxxxxxxxxxx
