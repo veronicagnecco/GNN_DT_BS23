@@ -1,19 +1,16 @@
 import sys
 import clr
-import System
+#import System
 import os
 import pandas as pd
 from math import *
-from expifcdata_test import dataframe_list
+
 
 ###COLLECTING ELEMENTS, LOCATIONS AND REAL ID PARAMETER############################################################################################################
 
-print(dataframe_list)
 
-quit()
-
-#elements1 = #VERFIL_AllObjectsOfIFCCategoryThatInRevitAreDataDevices-FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_DataDevices).WhereElementIsNotElementType().ToElements()
-#elements2 = #VERFIL_AllObjectsOfIFCCategoryThatInRevitAreElectricalEquipment-FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalEquipment).WhereElementIsNotElementType().ToElements()
+elements1 = #VERFIL_AllObjectsOfIFCCategoryThatInRevitAreDataDevices-FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_DataDevices).WhereElementIsNotElementType().ToElements()
+elements2 = #VERFIL_AllObjectsOfIFCCategoryThatInRevitAreElectricalEquipment-FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalEquipment).WhereElementIsNotElementType().ToElements()
 #need to point in both casesto the instances of elements (all the objects)
 
 lista= list(elements1)+list(elements2)
