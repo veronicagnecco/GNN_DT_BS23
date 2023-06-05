@@ -1,0 +1,4 @@
+CREATE (DJ:Facility {name: 'NextRoom', RevitID: 'Facility_N_XX'})
+CREATE (DK:Experiment {name: 'Experiment_XX', RevitID: 'Experiment_N_XX'})
+CREATE (DL:Computer {name: 'PC_NextRoom', RevitID: '849243'})
+RETURN DJ, DK, DL
